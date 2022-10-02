@@ -66,7 +66,7 @@ module Fastlane
 					UI.user_error!("dSYM does not exist at path: #{path}") unless File.exist?(path)
 				end
 
-				dsym_paths.compact.map do |dsym|
+				dsym_paths.compact.uniq.map do |dsym|
 					UI.message("Uploading dSYM: #{dsym}")
 
 					response = connection.put(url) do |request|

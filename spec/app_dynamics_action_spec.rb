@@ -1,9 +1,9 @@
-describe Fastlane::Actions::AppDynamicsAction do
+describe Fastlane::Actions::AppDynamicsDsymAction do
 	describe '#run' do
-		it 'prints a message' do
-			expect(Fastlane::UI).to receive(:message).with("The app_dynamics plugin is working!")
+	end
+end
 
-			Fastlane::Actions::AppDynamicsAction.run(nil)
-		end
+describe Fastlane::Actions::AppDynamicsMappingAction do
+	describe '#run' do
 	end
 end

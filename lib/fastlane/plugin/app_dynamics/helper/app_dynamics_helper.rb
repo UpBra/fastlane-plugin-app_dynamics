@@ -48,16 +48,6 @@ module Fastlane
 				UI.message response.status
 			end
 
-			def self.get_test(params)
-				connection = self.connection(params)
-
-				response = connection.get('https://www.something.com/hello') do |request|
-					request.params = {foo: 'bar'}
-				end
-
-				self.validate(response: response, error_message: 'Error while trying get_test')
-			end
-
 			def self.upload_dsyms(params)
 				connection = self.connection(params)
 				host = params[Key::API_HOST]

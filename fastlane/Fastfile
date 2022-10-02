@@ -1,0 +1,3 @@
+lane :test do
+	app_dynamics_dsym(api_account_name: 'foo', api_license_key: 'bars')
+end

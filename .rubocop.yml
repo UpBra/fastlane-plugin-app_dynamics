@@ -1,0 +1,53 @@
+---
+require:
+- rubocop/require_tools
+- rubocop-performance
+AllCops:
+  TargetRubyVersion: 2.6
+  NewCops: enable
+  SuggestExtensions: false
+  Include:
+  - "**/*.rb"
+  - "**/*file"
+  - "**/*.gemspec"
+  - "*/lib/assets/*Template"
+  - "*/lib/assets/*TemplateAndroid"
+  Exclude:
+  - "**/lib/assets/custom_action_template.rb"
+  - "./vendor/**/*"
+  - "**/lib/assets/DefaultFastfileTemplate"
+  - "**/lib/assets/MatchfileTemplate"
+  - "**/spec/fixtures/broken_files/broken_file.rb"
+  - "**/*.provisionprofile"
+
+# Layout
+Layout:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: true
+  Max: 160
+
+# Lint
+Lint:
+  Enabled: false
+
+# Metrics
+Metrics:
+  Enabled: false
+
+# Naming
+Naming:
+  Enabled: false
+
+# Require
+Require:
+  Enabled: false
+
+# Style
+Style:
+  Enabled: false
+
+Style/StringLiteralsInInterpolation:
+  Enabled: true
+  EnforcedStyle: double_quotes

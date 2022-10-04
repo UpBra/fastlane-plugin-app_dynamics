@@ -106,8 +106,8 @@ module Fastlane
 					response = connection.put(url) do |request|
 						content_type = 'text/plain'
 						request.headers[:content_type] = content_type
-						request.headers[:content_length] = File.size(dsym).to_s
-						request.body = Faraday::UploadIO.new(dsym, content_type)
+						request.headers[:content_length] = File.size(mapping).to_s
+						request.body = Faraday::UploadIO.new(mapping, content_type)
 					end
 
 					self.validate(response: response, error_message: 'Error while trying to upload mapping')

@@ -87,6 +87,13 @@ module Fastlane
 						type: Array,
 						default_value: Actions.lane_context[SharedValues::GRADLE_ALL_MAPPING_TXT_OUTPUT_PATHS],
 						optional: true
+					),
+					FastlaneCore::ConfigItem.new(
+						key: Helper::Key::FAIL_ON_ERROR,
+						env_name: 'APP_DYNAMICS_FAIL_ON_ERROR',
+						description: 'Fail on error',
+						type: Boolean,
+						default_value: true
 					)
 				]
 			end

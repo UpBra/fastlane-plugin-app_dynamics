@@ -12,16 +12,17 @@ module Fastlane
 			DEFAULT_VERSION = 'v2'
 
 			module Key
-				API_HOST = :api_host
-				API_VERSION = :api_version
 				API_ACCOUNT_NAME = :api_account_name
+				API_HOST = :api_host
 				API_LICENSE_KEY = :api_license_key
+				API_VERSION = :api_version
 				DSYM_PATH = :dsym_path
 				DSYM_PATHS = :dsym_paths
-				PACKAGE_NAME = :package_name
-				VERSION_CODE = :version_code
+				FAIL_ON_ERROR = :fail_on_error
 				MAPPING_PATH = :mapping_path
 				MAPPING_PATHS = :mapping_paths
+				PACKAGE_NAME = :package_name
+				VERSION_CODE = :version_code
 			end
 
 			def self.connection(params)
@@ -41,11 +42,13 @@ module Fastlane
 			end
 
 			def self.validate(params)
-				response = params[:response]
-				error_message = params[:error_message] || 'An error occurred'
+				error = params[:error]
+				error_message = params[:error_message] || 'An AppDynamics error occurred'
+				fail_on_error = params[:fail_on_error].to_s.downcase == 'true'
 
-				UI.user_error! "#{error_message}: #{response.status} #{response.reason_phrase}" unless response.success?
-				UI.message response.status
+				unless error.nil?
+					UI.user_error! "#{error_message}" if fail_on_error
+				end
 			end
 
 			def self.upload_dsyms(params)
@@ -69,14 +72,21 @@ module Fastlane
 				dsym_paths.compact.uniq.map do |dsym|
 					UI.message("Uploading dSYM: #{dsym}")
 
-					response = connection.put(url) do |request|
-						content_type = 'application/octet-stream'
-						request.headers[:content_type] = content_type
-						request.headers[:content_length] = File.size(dsym).to_s
-						request.body = Faraday::UploadIO.new(dsym, content_type)
+					error = nil
+
+					begin
+						response = connection.put(url) do |request|
+							content_type = 'application/octet-stream'
+							request.headers[:content_type] = content_type
+							request.headers[:content_length] = File.size(dsym).to_s
+							request.body = Faraday::UploadIO.new(dsym, content_type)
+						end
+					rescue => e
+						error = e
+						UI.error(e)
 					end
 
-					self.validate(response: response, error_message: 'Error while trying to upload dsym')
+					self.validate(error: error, error_message: 'Error while trying to upload dsym', fail_on_error: params[Key::FAIL_ON_ERROR])
 				end
 			end
 
@@ -103,14 +113,21 @@ module Fastlane
 				mapping_paths.compact.uniq.map do |mapping|
 					UI.message("Uploading mapping: #{mapping}")
 
-					response = connection.put(url) do |request|
-						content_type = 'text/plain'
-						request.headers[:content_type] = content_type
-						request.headers[:content_length] = File.size(mapping).to_s
-						request.body = Faraday::UploadIO.new(mapping, content_type)
+					error = nil
+
+					begin
+						response = connection.put(url) do |request|
+							content_type = 'text/plain'
+							request.headers[:content_type] = content_type
+							request.headers[:content_length] = File.size(mapping).to_s
+							request.body = Faraday::UploadIO.new(mapping, content_type)
+						end
+					rescue => e
+						error = e
+						UI.error(e)
 					end
 
-					self.validate(response: response, error_message: 'Error while trying to upload mapping')
+					self.validate(error: error, error_message: 'Error while trying to upload mapping', fail_on_error: params[Key::FAIL_ON_ERROR])
 				end
 			end
 		end

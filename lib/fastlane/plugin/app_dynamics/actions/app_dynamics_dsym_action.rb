@@ -75,6 +75,13 @@ module Fastlane
 						type: String,
 						default_value: Actions.lane_context[SharedValues::DSYM_PATHS],
 						optional: true
+					),
+					FastlaneCore::ConfigItem.new(
+						key: Helper::Key::FAIL_ON_ERROR,
+						env_name: 'APP_DYNAMICS_FAIL_ON_ERROR',
+						description: 'Fail on error',
+						type: Boolean,
+						default_value: true
 					)
 				]
 			end

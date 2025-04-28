@@ -44,7 +44,7 @@ module Fastlane
 			def self.validate(params)
 				error = params[:error]
 				error_message = params[:error_message] || 'An AppDynamics error occurred'
-				fail_on_error = params[:fail_on_error].to_s.downcase == 'true'
+				fail_on_error = params[:fail_on_error].to_s.casecmp('true').zero?
 
 				unless error.nil?
 					UI.user_error! "#{error_message}" if fail_on_error

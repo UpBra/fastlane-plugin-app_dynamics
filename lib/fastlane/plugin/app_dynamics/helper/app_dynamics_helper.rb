@@ -81,6 +81,8 @@ module Fastlane
 							request.headers[:content_length] = File.size(dsym).to_s
 							request.body = Faraday::UploadIO.new(dsym, content_type)
 						end
+
+						UI.success "Successfully uploaded dsym: #{response.status} - #{response.reason_phrase}" if response.success?
 					rescue => e
 						error = e
 						UI.error(e)
@@ -122,6 +124,8 @@ module Fastlane
 							request.headers[:content_length] = File.size(mapping).to_s
 							request.body = Faraday::UploadIO.new(mapping, content_type)
 						end
+
+						UI.success "Successfully uploaded mapping file: #{response.status} - #{response.reason_phrase}" if response.success?
 					rescue => e
 						error = e
 						UI.error(e)
